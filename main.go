@@ -117,19 +117,19 @@ func restore(hash, dir, archive string) error {
 
 // rebuild will rebuild the cache
 func rebuild(hash, dir, archive string) (err error) {
-	dir = filepath.Clean(dir)
-	dir, err = filepath.Abs(dir)
-	if err != nil {
+	innerdir = filepath.Clean(innerdir)
+	innerdir, innererr = filepath.Abs(innerdir)
+	if innererr != nil {
 		return err
 	}
-	_, err = os.Stat(dir)
-	if err != nil {
+	_, innererr = os.Stat(innerdir)
+	if innererr != nil {
 		return fmt.Errorf("File or directory %s does not exist", dir)
 	}
 
 	opt := tarOpts(archive)
 	out := fileName(hash, archive)
-	cmd := exec.Command("tar", opt, out, dir)
+	cmd := exec.Command("tar", opt, out, innerdir)
 	return cmd.Run()
 }
 
